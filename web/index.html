@@ -45,7 +45,7 @@
 							</form>
 							<div class="list-group">
 								<a href="#" class="list-group-item" ng-repeat="post in posts | filter:filter.name track by $index">
-									<h4 class="list-group-item-heading">{{::post.title}}</h4>
+									<h4 class="list-group-item-heading">{{::post.title}} <span class="btn btn-danger btn-xs" ng-click="deletePost(post.id)">Delete</span></h4>
 									<p class="list-group-item-text">{{::post.description}}</p>
 								</a>
 							</div>
@@ -68,7 +68,7 @@
 			{
 				if($scope.post.title.length > 0 && $scope.post.description.length > 0)
 				{
-					$scope.posts.push({id: $scope.posts.length, title: $scope.post.title, description: $scope.post.description});
+					$scope.posts.push({id: $scope.posts.length + "_" + +new Date(), title: $scope.post.title, description: $scope.post.description});
 
 					$scope.post.title = '';
 					$scope.post.description = '';
@@ -76,6 +76,18 @@
 					postService.savePosts($scope.posts);
 				}
 			};
+
+			$scope.deletePost = function(id)
+			{
+				angular.forEach($scope.posts, function(value, key)
+				{
+					if(value.id == id)
+					{
+						$scope.posts.splice(key, 1);
+						postService.savePosts($scope.posts);
+					}
+				});
+			}
 		});
 
 		app.service('postService', function($window)
