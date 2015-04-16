@@ -8,13 +8,19 @@
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 		<style>body{padding-top:50px;padding-bottom:20px}</style>
 		<!--[if lt IE 9]><script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script><script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+		<style>
+		[ng-cloak]
+		{
+			display: none;
+		}
+		</style>
 	</head>
 	<body ng-app="blog">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
 
-					<div ng-controller="blogController">
+					<div ng-controller="blogController" ng-cloak>
 
 						<form name="createPost" novalidate>
 							<div class="form-group">
@@ -31,8 +37,14 @@
 						<br />
 
 						<div>
+							<h2>Search</h2>
+							<form>
+								<div class="form-group">
+									<input class="form-control" ng-model="filter.name" placeholder="Search for something">
+								</div>
+							</form>
 							<div class="list-group">
-								<a href="#" class="list-group-item" ng-repeat="post in posts track by $index">
+								<a href="#" class="list-group-item" ng-repeat="post in posts | filter:filter.name track by $index">
 									<h4 class="list-group-item-heading">{{::post.title}}</h4>
 									<p class="list-group-item-text">{{::post.description}}</p>
 								</a>
